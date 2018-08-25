@@ -1,0 +1,14 @@
+{
+  "name": "node_events",
+  "version": "1.0.0",
+  "description": "to show full project using nodejs and mongodb",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "abdulaziz alzaabi",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
