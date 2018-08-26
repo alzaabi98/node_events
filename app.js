@@ -16,5 +16,5 @@ app.use('/events', events)
 
 app.listen(3000, ()=> {
 
-    console.log(' app is wokring on port 3000, i am in lesson 3')
+    console.log(' app is wokring on port 3000')
 })
