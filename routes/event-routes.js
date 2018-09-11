@@ -20,10 +20,21 @@ router.get('/', (req,res)=> {
 })
 
 // show single event
-
 router.get('/:id', (req,res)=> {
+    Event.findOne({_id: req.params.id}, (err,event)=> {
+        
+       if(!err) {
+           
+        res.render('event/show', {
+            event: event
+        })
+
+       } else {
+           console.log(err)
+       }
     
-    res.render('event/show')
+    })
+ 
 })
 
 
