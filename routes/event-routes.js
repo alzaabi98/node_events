@@ -19,6 +19,19 @@ router.get('/', (req,res)=> {
   
 })
 
+//create new events
+
+router.get('/create', (req,res)=> {
+
+    res.render('event/create')
+})
+// save event to db
+
+router.post('/create', (req,res)=> {
+
+    console.log(req.body)
+})
+
 // show single event
 router.get('/:id', (req,res)=> {
     Event.findOne({_id: req.params.id}, (err,event)=> {
