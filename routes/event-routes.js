@@ -30,6 +30,22 @@ router.get('/create', (req,res)=> {
 router.post('/create', (req,res)=> {
 
     console.log(req.body)
+    let newEvent = new Event({
+        title: req.body.title,
+        description: req.body.description,
+        date: req.body.date,
+        location: req.body.location,
+        created_at: Date.now()
+    })
+
+    newEvent.save( (err)=> {
+        if(!err) {
+            console.log('event was added')
+            res.redirect('/events')
+        } else {
+            consoel.log(err)
+        }
+    })
 })
 
 // show single event
