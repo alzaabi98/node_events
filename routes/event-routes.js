@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const Event = require('../models/Evnet')
-
+const { check, validationResult } = require('express-validator/check')
 // route to home events
 router.get('/', (req,res)=> {   
     Event.find({}, (err,events)=> {
@@ -23,29 +23,47 @@ router.get('/', (req,res)=> {
 
 router.get('/create', (req,res)=> {
 
-    res.render('event/create')
+    res.render('event/create', {
+        errors: false
+    })
 })
 // save event to db
 
-router.post('/create', (req,res)=> {
+router.post('/create', [
+    check('title').isLength({min: 5}).withMessage('Title should be more than 5 char'),
+    check('description').isLength({min: 5}).withMessage('Description should be more than 5 char'),
+    check('location').isLength({min: 3}).withMessage('Location should be more than 5 char'),
+    check('date').isLength({min: 5}).withMessage('Date should valid Date'),
 
-    console.log(req.body)
-    let newEvent = new Event({
-        title: req.body.title,
-        description: req.body.description,
-        date: req.body.date,
-        location: req.body.location,
-        created_at: Date.now()
-    })
+] , (req,res)=> {
 
-    newEvent.save( (err)=> {
-        if(!err) {
-            console.log('event was added')
-            res.redirect('/events')
-        } else {
-            consoel.log(err)
-        }
-    })
+    const errors = validationResult(req)
+
+    if( !errors.isEmpty()) {
+     
+        res.render('event/create', {
+            errors: errors.array()
+        })
+    } else {
+        
+        let newEvent = new Event({
+            title: req.body.title,
+            description: req.body.description,
+            date: req.body.date,
+            location: req.body.location,
+            created_at: Date.now()
+        })
+
+        newEvent.save( (err)=> {
+            if(!err) {
+                console.log('event was added')
+                res.redirect('/events')
+            } else {
+                console.log(err)
+            }
+        })
+    }
+   
 })
 
 // show single event
