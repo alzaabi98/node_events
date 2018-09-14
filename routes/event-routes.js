@@ -43,7 +43,7 @@ router.post('/create', (req,res)=> {
             console.log('event was added')
             res.redirect('/events')
         } else {
-            consoel.log(err)
+            console.log(err)
         }
     })
 })
