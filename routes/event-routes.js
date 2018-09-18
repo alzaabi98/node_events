@@ -13,7 +13,8 @@ router.get('/', (req,res)=> {
         }
         //res.json(chunk)
          res.render('event/index', {
-             chunk : chunk
+             chunk : chunk,
+             message: req.flash('info')
          })
     })
   
@@ -22,9 +23,9 @@ router.get('/', (req,res)=> {
 //create new events
 
 router.get('/create', (req,res)=> {
-
+   
     res.render('event/create', {
-        errors: false
+        errors: req.flash('errors')
     })
 })
 // save event to db
@@ -40,10 +41,9 @@ router.post('/create', [
     const errors = validationResult(req)
 
     if( !errors.isEmpty()) {
-     
-        res.render('event/create', {
-            errors: errors.array()
-        })
+        
+        req.flash('errors',errors.array())
+        res.redirect('/events/create')
     } else {
         
         let newEvent = new Event({
@@ -57,10 +57,11 @@ router.post('/create', [
         newEvent.save( (err)=> {
             if(!err) {
                 console.log('event was added')
+                req.flash('info', ' The event was created successfuly')
                 res.redirect('/events')
             } else {
                 console.log(err)
-            }
+            } 
         })
     }
    
