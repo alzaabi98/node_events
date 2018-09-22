@@ -12,7 +12,8 @@
                     <label for="title">Title</label>
                     <input type="text" name="title" id="title" class="form-control" value="<%= event.title%>" >
                 </div>
-
+                
+                <input type="hidden" name="id" value="<%=event.id%>">
                 <div class="form-group">
                         <label for="description">Description</label>
                        <textarea name="description" rows="4" class="form-control"><%= event.description%></textarea>

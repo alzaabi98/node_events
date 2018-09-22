@@ -98,7 +98,9 @@ router.get('/edit/:id', (req,res)=> {
        
          res.render('event/edit', {
              event: event,
-             eventDate: moment(event.date).format('YYYY-MM-DD')
+             eventDate: moment(event.date).format('YYYY-MM-DD'),
+             errors: req.flash('errors'),
+             message: req.flash('info')
          })
  
         } else {
@@ -111,9 +113,39 @@ router.get('/edit/:id', (req,res)=> {
 
 // update the form
 
-router.post('/update', (req,res)=> {
+router.post('/update',[
+    check('title').isLength({min: 5}).withMessage('Title should be more than 5 char'),
+    check('description').isLength({min: 5}).withMessage('Description should be more than 5 char'),
+    check('location').isLength({min: 3}).withMessage('Location should be more than 5 char'),
+    check('date').isLength({min: 5}).withMessage('Date should valid Date'),
+
+], (req,res)=> {
     
-    console.log(req.body)
+    const errors = validationResult(req)
+    if( !errors.isEmpty()) {
+       
+        req.flash('errors',errors.array())
+        res.redirect('/events/edit/' + req.body.id)
+    } else {
+       // crete obj
+       let newfeilds = {
+           title: req.body.title,
+           description: req.body.description,
+           location: req.body.location,
+           date: req.body.date
+       }
+       let query = {_id: req.body.id}
+
+       Event.updateOne(query, newfeilds, (err)=> {
+           if(!err) {
+               req.flash('info', " The event was updated successfuly"),
+               res.redirect('/events/edit/' + req.body.id)
+           } else {
+               console.log(err)
+           }
+       })
+    }
+   
 })
 
 module.exports = router 
