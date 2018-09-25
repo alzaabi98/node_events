@@ -16,7 +16,7 @@
                 
 
                 <a href="<%= '/events/edit/' + event.id %>" class="btn btn-primary">Edit</a>
-                <a href="" class="btn btn-danger">Delete</a>
+                <button class="btn btn-danger" onclick="deleteEvent()" id="deleteBtn" data-id="<%= event.id%>">Delete</button>
                 
             </div>
         </div>
