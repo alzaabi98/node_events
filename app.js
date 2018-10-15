@@ -30,11 +30,14 @@ app.get('/', (req,res)=> {
     res.send(" it is working from web")
 })
 
-// bringg events routes
+// bring events routes
 
 const events = require('./routes/event-routes')
 app.use('/events', events)
 
+// bring user routes
+const users = require('./routes/user-routes')
+app.use('/users', users)
 // listen to port 3000
 
 app.listen(3000, ()=> {
