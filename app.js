@@ -27,7 +27,8 @@ app.use(flash())
 
 app.get('/', (req,res)=> {
 
-    res.send(" it is working from web")
+   res.redirect('/events')
+    
 })
 
 // bring events routes
