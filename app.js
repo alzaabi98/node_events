@@ -4,6 +4,8 @@ const db = require('./config/database')
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const flash = require('connect-flash')
+const passport = require('passport')
+const passportSetup = require('./config/passport-setup')
 // bring ejs template
 
 app.set('view engine', 'ejs')
@@ -23,7 +25,9 @@ app.use(session({
     cookie: {maxAge: 60000 * 15}
 }))
 app.use(flash())
-//
+// bring passport 
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.get('/', (req,res)=> {
 
