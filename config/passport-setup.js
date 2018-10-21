@@ -13,7 +13,7 @@ passport.serializeUser(function(user, done) {
       done(err, user);
     });
   });
-
+// register user
 passport.use('local.signup', new localStrategy({
     usernameField : 'email',
     passwordField: 'password',
@@ -47,3 +47,32 @@ passport.use('local.signup', new localStrategy({
     }
 }))
 
+//login strategy
+
+passport.use('local.login', new localStrategy({
+    usernameField : 'email',
+    passwordField: 'password',
+    passReqToCallback: true
+}, (req,username,password, done)=> {
+
+    //find user
+    User.findOne({email: username}, (err,user)=> {
+
+        if (err) {
+            return done(null, false, req.flash('error', 'Something wrong happened'))
+        } 
+        if(!user) {
+            return done(null, false, req.flash('error', 'user was not found'))
+        }
+        if (user) {
+            if (user.comparePasswords(password, user.password)) {
+
+                return done(null,user, req.flash('success', ' welcome back'))
+
+            } else {
+                return done(null,false, req.flash('error', ' password is wrong'))
+
+            }
+        }
+    })
+}))

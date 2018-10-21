@@ -5,14 +5,19 @@ const passport = require('passport')
 
 //  login user view 
 router.get('/login', (req,res)=> {
-    res.render('user/login')
+    res.render('user/login', {
+        error: req.flash('error')
+    })
 })
 
 // login post request 
-router.post('/login', (req,res)=> {
-    console.log(req.body)
-    res.json('login in user ... ')
-})
+router.post('/login',
+  passport.authenticate('local.login', {
+    successRedirect: '/users/profile',
+      failureRedirect: '/users/login',
+      failureFlash: true })
+      )
+
 
 // sign up form 
 router.get('/signup', (req,res)=> {
