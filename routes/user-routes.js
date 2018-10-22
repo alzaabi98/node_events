@@ -3,6 +3,12 @@ const router = express.Router()
 const User = require('../models/User')
 const passport = require('passport')
 
+// middleware to check if user is loogged in
+
+isAuthenticated = (req,res,next) => {
+    if (req.isAuthenticated()) return next()
+    res.redirect('/users/login')
+}
 //  login user view 
 router.get('/login', (req,res)=> {
     res.render('user/login', {
@@ -36,16 +42,20 @@ router.post('/signup',
       )
 
 // progile 
-router.get('/profile', (req,res)=> {
-    res.render('user/profile', {
-        success: req.flash('success')
-    })
+router.get('/profile',isAuthenticated, (req,res)=> {
+
+res.render('user/profile', {
+    success: req.flash('success')
+})
+  
+
 })
 
 // logout user
 
 router.get('/logout', (req,res)=> {
-    res.json('logout user')
+    req.logout();
+    res.redirect('/users/login');
 })
 
 module.exports = router
