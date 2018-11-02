@@ -16,6 +16,7 @@ app.use(bodyParser.json())
 //bring static
 
 app.use(express.static('public'))
+app.use(express.static('uploads'))
 app.use(express.static('node_modules'))
 // session and flash config .
 app.use(session({

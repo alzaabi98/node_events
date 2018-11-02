@@ -12,6 +12,14 @@ isAuthenticated = (req,res,next) => {
     res.redirect('/users/login')
 }
 
+//create new events
+
+router.get('/create',isAuthenticated, (req,res)=> {
+   
+    res.render('event/create', {
+        errors: req.flash('errors')
+    })
+})
 // route to home events
 router.get('/:pageNo?', (req,res)=> {   
     let pageNo = 1
@@ -54,14 +62,7 @@ router.get('/:pageNo?', (req,res)=> {
   
 })
 
-//create new events
 
-router.get('/create',isAuthenticated, (req,res)=> {
-   
-    res.render('event/create', {
-        errors: req.flash('errors')
-    })
-})
 // save event to db
 
 router.post('/create', [
@@ -103,7 +104,7 @@ router.post('/create', [
 })
 
 // show single event
-router.get('/:id', (req,res)=> {
+router.get('/show/:id', (req,res)=> {
     Event.findOne({_id: req.params.id}, (err,event)=> {
         
        if(!err) {
