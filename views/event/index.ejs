@@ -29,9 +29,25 @@
           </div>
           <%})%>
     </div>
-  <%})%>
 
-  
+  <%})%>
+<div class="row">
+  <div class="col-12 mt-2 mb-4">
+    <nav aria-label="...">
+      <ul class="pagination pagination-lg justify-content-center">
+        <% for (let i=1 ; i <= Math.ceil(total/5); i++) {%>
+        
+          <% if (pageNo == i) {%>
+            <li class="page-item active"><a class="page-link" href="<%= '/events/' + i%>"><%= i%></a></li>
+          <%} else { %>
+          <li class="page-item"><a class="page-link" href="<%= '/events/' + i%>"><%= i%></a></li>
+          <%}%>
+        
+        <%}%>
+      </ul>
+    </nav>
+  </div>
+</div>
 </div>
 
 

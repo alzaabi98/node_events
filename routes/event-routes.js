@@ -13,20 +13,44 @@ isAuthenticated = (req,res,next) => {
 }
 
 // route to home events
-router.get('/', (req,res)=> {   
-    Event.find({}, (err,events)=> {
-   //     res.json(events)
-        let chunk = []
-        let chunkSize = 3
-        for (let i =0 ; i < events.length ; i+=chunkSize) {
-            chunk.push(events.slice( i, chunkSize + i))
-        }
-        //res.json(chunk)
-         res.render('event/index', {
-             chunk : chunk,
-             message: req.flash('info')
-         })
+router.get('/:pageNo?', (req,res)=> {   
+    let pageNo = 1
+
+    if ( req.params.pageNo) {
+        pageNo = parseInt(req.params.pageNo)
+    }
+    if (req.params.pageNo == 0)   {
+        pageNo = 1
+    }
+    
+    let q = {
+        skip: 5 * (pageNo - 1),
+        limit: 5
+    }
+    //find totoal documents
+    let totalDocs = 0 
+
+    Event.countDocuments({}, (err,total)=> {
+
+    }).then( (response)=> {
+        totalDocs = parseInt(response)
+        Event.find({},{},q, (err,events)=> {
+            //     res.json(events)
+                 let chunk = []
+                 let chunkSize = 3
+                 for (let i =0 ; i < events.length ; i+=chunkSize) {
+                     chunk.push(events.slice( i, chunkSize + i))
+                 }
+                 //res.json(chunk)
+                  res.render('event/index', {
+                      chunk : chunk,
+                      message: req.flash('info'),
+                      total: parseInt(totalDocs),
+                      pageNo: pageNo
+                  })
+             })
     })
+
   
 })
 
